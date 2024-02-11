@@ -1,4 +1,4 @@
-package com.example.view;
+package com.example.view.components;
 
 import com.example.model.Book;
 

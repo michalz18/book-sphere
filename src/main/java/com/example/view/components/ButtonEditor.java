@@ -1,4 +1,4 @@
-package com.example.view;
+package com.example.view.components;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -9,10 +9,10 @@ import java.util.function.Consumer;
 
 public class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
     private JTable table;
-    private JButton button;
+    private final JButton button;
     private String label;
     private boolean isPushed;
-    private Consumer<Integer> action;
+    private final Consumer<Integer> action;
 
     public ButtonEditor(JCheckBox checkBox, Consumer<Integer> action) {
         super();

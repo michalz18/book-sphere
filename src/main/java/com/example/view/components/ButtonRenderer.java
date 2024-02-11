@@ -1,9 +1,8 @@
-package com.example.view;
+package com.example.view.components;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.*;
 
 public class ButtonRenderer extends JButton implements TableCellRenderer {
     public ButtonRenderer() {

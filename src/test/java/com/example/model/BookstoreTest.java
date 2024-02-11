@@ -1,8 +1,6 @@
 package com.example.model;
 
-import com.example.model.Book;
-import com.example.model.Bookstore;
-import com.example.view.OperationResult;
+import com.example.utils.OperationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,30 +23,30 @@ class BookstoreTest {
     @Test
     void testAddTheSameBookTwice() {
         OperationResult result = bookstore.addBook(book);
-        assertFalse(result.isSuccess());
-        assertEquals("Book already exists in the catalog.", result.getMessage());
+        assertFalse(result.success());
+        assertEquals("Book already exists in the catalog.", result.message());
     }
 
     @Test
     void testRemoveBook() {
         OperationResult removeResult = bookstore.removeBook(book.getId());
-        assertTrue(removeResult.isSuccess());
-        assertEquals("Book successfully removed from the catalog.", removeResult.getMessage());
+        assertTrue(removeResult.success());
+        assertEquals("Book successfully removed from the catalog.", removeResult.message());
     }
 
     @Test
     void testRemoveNonExistingBook() {
         OperationResult result = bookstore.removeBook(UUID.randomUUID());
-        assertFalse(result.isSuccess());
-        assertEquals("Book does not exist in the catalog.", result.getMessage());
+        assertFalse(result.success());
+        assertEquals("Book does not exist in the catalog.", result.message());
     }
 
     @Test
     void editExistingBook() {
         Book updatedBook = new Book(book.getId(), "Updated Title", book.getAuthor(), book.getPublicationDate(), book.getPrice(), book.getNumberOfCopiesAvailable(), book.isAvailable());
         OperationResult result = bookstore.editBook(updatedBook);
-        assertTrue(result.isSuccess());
-        assertEquals("Book successfully updated in the catalog.", result.getMessage());
+        assertTrue(result.success());
+        assertEquals("Book successfully updated in the catalog.", result.message());
 
         Book retrievedBook = bookstore.getBooks().get(book.getId());
         assertNotNull(retrievedBook);
@@ -59,8 +57,8 @@ class BookstoreTest {
     void editNonExistingBookFailure() {
         Book nonExistingBook = new Book(UUID.randomUUID(), "Non-Existing Title", "Non-Existing Author", 2021, 20.99, 10, true);
         OperationResult result = bookstore.editBook(nonExistingBook);
-        assertFalse(result.isSuccess());
-        assertEquals("Book does not exist in the catalog.", result.getMessage());
+        assertFalse(result.success());
+        assertEquals("Book does not exist in the catalog.", result.message());
     }
 
     @Test
@@ -69,8 +67,8 @@ class BookstoreTest {
         Book updatedBook = new Book(book.getId(), book.getTitle(), book.getAuthor(), book.getPublicationDate(), newPrice, book.getNumberOfCopiesAvailable(), book.isAvailable());
         OperationResult result = bookstore.editBook(updatedBook);
 
-        assertTrue(result.isSuccess());
-        assertEquals("Book successfully updated in the catalog.", result.getMessage());
+        assertTrue(result.success());
+        assertEquals("Book successfully updated in the catalog.", result.message());
 
         Book retrievedBook = bookstore.getBooks().get(book.getId());
         assertNotNull(retrievedBook);
