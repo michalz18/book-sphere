@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.example.view.OperationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,16 @@ public class Bookstore {
         books.put(book.getId(), book);
         logger.info("Book added: {}", book);
         return operationSuccess("Book successfully added to the catalog.");
+    }
+
+    public OperationResult removeBook(UUID bookId) {
+        if (!books.containsKey(bookId)) {
+            logger.warn("Attempted to remove non-existent book: {}", bookId);
+            return operationFailed("Book does not exist in the catalog.");
+        }
+        books.remove(bookId);
+        logger.info("Book removed: {}", bookId);
+        return operationSuccess("Book successfully removed from the catalog.");
     }
 
     private OperationResult operationSuccess(String message) {
