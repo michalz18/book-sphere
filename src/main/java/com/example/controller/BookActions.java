@@ -22,7 +22,7 @@ public class BookActions {
         Book newBook = BookDialog.showDialog(frame, null, new ArrayList<>(bookstore.getCategories()));
         if (newBook != null) {
             OperationResult result = bookstore.addBook(newBook);
-            JOptionPane.showMessageDialog(frame, result.getMessage());
+            JOptionPane.showMessageDialog(frame, result.message());
             bookstore.notifyObservers();
         }
     }
@@ -33,7 +33,7 @@ public class BookActions {
             Book updatedBook = BookDialog.showDialog(frame, bookToEdit, new ArrayList<>(bookstore.getCategories()));
             if (updatedBook != null) {
                 OperationResult result = bookstore.editBook(updatedBook);
-                JOptionPane.showMessageDialog(frame, result.getMessage());
+                JOptionPane.showMessageDialog(frame, result.message());
                 bookstore.notifyObservers();
             }
         }
@@ -41,7 +41,15 @@ public class BookActions {
 
     public void removeBook(UUID bookId) {
         OperationResult result = bookstore.removeBook(bookId);
-        JOptionPane.showMessageDialog(frame, result.getMessage());
+        JOptionPane.showMessageDialog(frame, result.message());
         bookstore.notifyObservers();
+    }
+
+    public void addCategory() {
+        String categoryName = JOptionPane.showInputDialog(frame, "Enter category name:", "Add New Category", JOptionPane.PLAIN_MESSAGE);
+        if (categoryName != null && !categoryName.trim().isEmpty()) {
+            OperationResult result = bookstore.addCategory(categoryName);
+            JOptionPane.showMessageDialog(frame, result.message());
+        }
     }
 }
