@@ -13,6 +13,7 @@ import java.util.*;
 public class Bookstore implements Subject {
     private static final Logger logger = LoggerFactory.getLogger(Bookstore.class);
     private final Map<UUID, Book> books = new HashMap<>();
+    private final Map<UUID, Category> categories = new HashMap<>();
     private final List<Observer> observers = new ArrayList<>();
 
     @Override
@@ -61,6 +62,21 @@ public class Bookstore implements Subject {
         books.put(updatedBook.getId(), updatedBook);
         notifyObservers();
         return new OperationResult(true, "Book updated successfully.");
+    }
+
+    public OperationResult addCategory(String categoryName) {
+        for (Category category : categories.values()) {
+            if (category.getName().equalsIgnoreCase(categoryName)) {
+                logger.warn("Attempted to add a category that already exists: {}", categoryName);
+                return operationFailed("Category already exists.");
+            }
+        }
+
+        Category newCategory = new Category(categoryName);
+        categories.put(newCategory.getId(), newCategory);
+        notifyObservers();
+        logger.info("Category added: {}", newCategory);
+        return operationSuccess("Category successfully added.");
     }
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
