@@ -1,8 +1,5 @@
 package com.example.utils;
 
-import lombok.Getter;
-
-@Getter
 public record OperationResult(boolean success, String message) {
 
     @Override
