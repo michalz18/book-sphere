@@ -1,5 +1,8 @@
 package com.example.model;
 
+import lombok.Getter;
+
+@Getter
 public class OperationResult {
     private final boolean success;
     private final String message;
