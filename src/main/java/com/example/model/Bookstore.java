@@ -37,13 +37,12 @@ public class Bookstore {
 
     public OperationResult editBook(Book updatedBook) {
         if (updatedBook == null || !books.containsKey(updatedBook.getId())) {
-            return operationFailed("Book does not exist in the catalog.");
+            return new OperationResult(false, "Book does not exist.");
         }
-
         books.put(updatedBook.getId(), updatedBook);
-        logger.info("Book updated: {}", updatedBook);
-        return operationSuccess("Book successfully updated in the catalog.");
+        return new OperationResult(true, "Book updated successfully.");
     }
+
 
 
 

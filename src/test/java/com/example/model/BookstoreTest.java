@@ -1,5 +1,7 @@
 package com.example.model;
 
+import com.example.model.Book;
+import com.example.model.Bookstore;
 import com.example.view.OperationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,7 @@ class BookstoreTest {
     @BeforeEach
     void setUp() {
         bookstore = new Bookstore();
-        book = new Book("Existing Book", "Existing Author", 2000, 15.99, 5);
+        book = new Book(UUID.randomUUID(), "Existing Book", "Existing Author", 2000, 15.99, 5, true);
         bookstore.addBook(book);
     }
 
