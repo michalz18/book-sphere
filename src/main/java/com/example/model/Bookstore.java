@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Bookstore {
@@ -31,6 +32,33 @@ public class Bookstore {
         logger.info("Book removed: {}", bookId);
         return operationSuccess("Book successfully removed from the catalog.");
     }
+
+    public OperationResult editBook(
+            UUID bookId,
+            Optional<String> newTitle,
+            Optional<String> newAuthor,
+            Optional<Integer> newPublicationDate,
+            Optional<Double> newPrice,
+            Optional<Integer> newNumberOfCopiesAvailable
+    ) {
+        Book book = books.get(bookId);
+        if (book == null) {
+            return operationFailed("Book does not exist in the catalog.");
+        }
+
+        newTitle.ifPresent(book::setTitle);
+        newAuthor.ifPresent(book::setAuthor);
+        newPublicationDate.ifPresent(book::setPublicationDate);
+        newPrice.ifPresent(book::setPrice);
+        newNumberOfCopiesAvailable.ifPresent(n -> {
+            book.setNumberOfCopiesAvailable(n);
+            book.setAvailable(n > 0);
+        });
+
+        logger.info("Book updated: {}", book);
+        return operationSuccess("Book successfully updated in the catalog.");
+    }
+
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
