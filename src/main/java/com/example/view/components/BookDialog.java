@@ -5,7 +5,9 @@ import com.example.model.Category;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class BookDialog {
@@ -16,15 +18,16 @@ public class BookDialog {
         JTextField yearField = new JTextField(20);
         JTextField priceField = new JTextField(20);
         JTextField copiesField = new JTextField(20);
-        JComboBox<Category> categoryComboBox = new JComboBox<>(categories.toArray(new Category[0]));
 
-        if (book != null) {
-            titleField.setText(book.getTitle());
-            authorField.setText(book.getAuthor());
-            yearField.setText(String.valueOf(book.getPublicationDate()));
-            priceField.setText(String.valueOf(book.getPrice()));
-            copiesField.setText(String.valueOf(book.getNumberOfCopiesAvailable()));
-            categoryComboBox.setSelectedItem(book.getCategory());
+        Map<String, Category> categoryMap = new HashMap<>();
+        for (Category category : categories) {
+            categoryMap.put(category.getName(), category);
+        }
+
+        JComboBox<String> categoryComboBox = new JComboBox<>(categoryMap.keySet().toArray(new String[0]));
+
+        if (book != null && book.getCategory() != null) {
+            categoryComboBox.setSelectedItem(book.getCategory().getName());
         }
 
         Object[] message = {
@@ -45,7 +48,9 @@ public class BookDialog {
                 int year = Integer.parseInt(yearField.getText());
                 double price = Double.parseDouble(priceField.getText());
                 int copies = Integer.parseInt(copiesField.getText());
-                Category selectedCategory = (Category) categoryComboBox.getSelectedItem();
+
+                String selectedCategoryName = (String) categoryComboBox.getSelectedItem();
+                Category selectedCategory = categoryMap.get(selectedCategoryName);
 
                 if (book == null) {
                     book = new Book(UUID.randomUUID(), title, author, year, price, copies, copies > 0, selectedCategory);
