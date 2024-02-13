@@ -74,6 +74,20 @@ public class Bookstore implements Subject {
         logger.info("Category added: {}", newCategory);
         return operationSuccess("Category successfully added.");
     }
+
+    public OperationResult sellBook(UUID bookId) {
+        Book book = books.get(bookId);
+        if (book != null && book.getNumberOfCopiesAvailable() > 0) {
+            book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - 1);
+            if (book.getNumberOfCopiesAvailable() == 0) {
+                book.setAvailable(false);
+            }
+            logger.info("Book sold: {}", book);
+            notifyObservers();
+            return operationSuccess("Book sold successfully.");
+        }
+        return operationFailed("Book cannot be sold (may not exist or no copies available).");
+    }
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
     }
