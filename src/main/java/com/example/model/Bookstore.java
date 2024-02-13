@@ -16,6 +16,7 @@ public class Bookstore implements Subject {
     private final Set<Category> categories = new HashSet<>();
     private final List<Observer> observers = new ArrayList<>();
     private final Set<Customer> customers = new HashSet<>();
+    private final Map<UUID, Sale> sales = new HashMap<>();
     private final Map<UUID, Reservation> reservations = new HashMap<>();
 
     @Override
@@ -97,12 +98,18 @@ public class Bookstore implements Subject {
 
         book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
 
+        double totalPrice = quantity * book.getPrice();
+
+        Sale sale = new Sale(book, customer, quantity, totalPrice);
+        sales.put(sale.getId(), sale);
+
         if (book.getNumberOfCopiesAvailable() <= 0) {
             book.setAvailable(false);
         }
-        logger.info("Book sold: {} to {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
+
+        logger.info("Book sold: {} to {} Quantity: {}, Total Price: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity, totalPrice);
         notifyObservers();
-        return operationSuccess("Book sold successfully. Quantity: " + quantity);
+        return operationSuccess("Book sold successfully. Quantity: " + quantity + ", Total Price: " + totalPrice);
     }
 
     public OperationResult reserveBook(UUID bookId, Customer customer, int quantity) {
