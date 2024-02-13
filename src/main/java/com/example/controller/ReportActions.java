@@ -1,9 +1,6 @@
 package com.example.controller;
 
-import com.example.model.Book;
-import com.example.model.Bookstore;
-import com.example.model.InventoryReport;
-import com.example.model.ReservationReport;
+import com.example.model.*;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -35,6 +32,13 @@ public class ReportActions {
         return bookstore.getReservations().values().stream()
                 .filter(reservation -> !reservation.getReservationDate().isBefore(startDate.atStartOfDay()) && !reservation.getReservationDate().isAfter(endDate.atTime(23, 59)))
                 .map(reservation -> new ReservationReport(reservation.getBook(), reservation.getCustomer(), reservation.getReservationDate(), reservation.getQuantity()))
+                .toList();
+    }
+
+    public List<SalesReport> generateSalesReport(LocalDate startDate, LocalDate endDate) {
+        return bookstore.getSales().values().stream()
+                .filter(sale -> !sale.getSaleDate().isBefore(startDate.atStartOfDay()) && !sale.getSaleDate().isAfter(endDate.atTime(23, 59)))
+                .map(sale -> new SalesReport(sale.getBook(), sale.getCustomer(), sale.getSaleDate(), sale.getQuantitySold(), sale.getTotalPrice()))
                 .toList();
     }
 
