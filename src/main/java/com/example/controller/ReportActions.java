@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import com.example.model.*;
+import com.example.model.reports.InventoryReport;
+import com.example.model.reports.ReservationReport;
+import com.example.model.reports.SalesReport;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -30,15 +33,32 @@ public class ReportActions {
 
     public List<ReservationReport> generateReservationReport(LocalDate startDate, LocalDate endDate) {
         return bookstore.getReservations().values().stream()
-                .filter(reservation -> !reservation.getReservationDate().isBefore(startDate.atStartOfDay()) && !reservation.getReservationDate().isAfter(endDate.atTime(23, 59)))
-                .map(reservation -> new ReservationReport(reservation.getBook(), reservation.getCustomer(), reservation.getReservationDate(), reservation.getQuantity()))
+                .filter(reservation ->
+                        !reservation.getReservationDate().isBefore(startDate.atStartOfDay())
+                                && !reservation.getReservationDate().isAfter(endDate.atTime(23, 59)))
+                .map(reservation ->
+                        new ReservationReport
+                                (
+                                        reservation.getBook(),
+                                        reservation.getCustomer(),
+                                        reservation.getReservationDate(),
+                                        reservation.getQuantity()))
                 .toList();
     }
 
     public List<SalesReport> generateSalesReport(LocalDate startDate, LocalDate endDate) {
         return bookstore.getSales().values().stream()
-                .filter(sale -> !sale.getSaleDate().isBefore(startDate.atStartOfDay()) && !sale.getSaleDate().isAfter(endDate.atTime(23, 59)))
-                .map(sale -> new SalesReport(sale.getBook(), sale.getCustomer(), sale.getSaleDate(), sale.getQuantitySold(), sale.getTotalPrice()))
+                .filter(sale ->
+                        !sale.getSaleDate().isBefore(startDate.atStartOfDay())
+                                && !sale.getSaleDate().isAfter(endDate.atTime(23, 59)))
+                .map(sale ->
+                        new SalesReport
+                                (
+                                        sale.getBook(),
+                                        sale.getCustomer(),
+                                        sale.getSaleDate(),
+                                        sale.getQuantitySold(),
+                                        sale.getTotalPrice()))
                 .toList();
     }
 

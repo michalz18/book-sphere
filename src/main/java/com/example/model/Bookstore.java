@@ -139,55 +139,6 @@ public class Bookstore implements Subject {
         return operationSuccess("Book reserved successfully. Quantity: " + quantity);
     }
 
-    public List<InventoryReport> generateInventoryReport() {
-        if (books.isEmpty()) {
-            logger.info("Generating inventory report: No books found in the inventory.");
-            return Collections.emptyList();
-        }
-        List<InventoryReport> report = new ArrayList<>();
-        for (Book book : books.values()) {
-            report.add(new InventoryReport(book, book.getNumberOfCopiesAvailable()));
-        }
-        logger.info("Inventory report generated successfully: {} books reported.", report.size());
-        return report;
-    }
-
-    public List<ReservationReport> generateReservationReport(LocalDateTime startDate, LocalDateTime endDate) {
-        if (reservations.isEmpty()) {
-            logger.info("Generating reservation report: No reservations found.");
-            return Collections.emptyList();
-        }
-        List<ReservationReport> report = reservations.values().stream()
-                .filter(reservation -> !reservation.getReservationDate().isBefore(startDate) && !reservation.getReservationDate().isAfter(endDate))
-                .map(reservation -> new ReservationReport(reservation.getBook(), reservation.getCustomer(), reservation.getReservationDate(), reservation.getQuantity()))
-                .toList();
-
-        if (report.isEmpty()) {
-            logger.info("No reservations found within the specified date range: {} to {}.", startDate, endDate);
-        } else {
-            logger.info("Reservation report generated successfully: {} reservations reported within the date range {} to {}.", report.size(), startDate, endDate);
-        }
-        return report;
-    }
-
-    public List<SalesReport> generateSalesReport(LocalDateTime startDate, LocalDateTime endDate) {
-        if (sales.isEmpty()) {
-            logger.info("Generating sales report: No sales transactions found.");
-            return Collections.emptyList();
-        }
-        List<SalesReport> report = sales.values().stream()
-                .filter(sale -> !sale.getSaleDate().isBefore(startDate) && !sale.getSaleDate().isAfter(endDate))
-                .map(sale -> new SalesReport(sale.getBook(), sale.getCustomer(), sale.getSaleDate(), sale.getQuantitySold(), sale.getTotalPrice()))
-                .toList();
-
-        if (report.isEmpty()) {
-            logger.info("No sales transactions found within the specified date range: {} to {}.", startDate, endDate);
-        } else {
-            logger.info("Sales report generated successfully: {} sales transactions reported within the date range {} to {}.", report.size(), startDate, endDate);
-        }
-        return report;
-    }
-
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);

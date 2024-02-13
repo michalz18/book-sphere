@@ -2,9 +2,9 @@ package com.example.view.panels;
 
 import com.example.controller.ReportActions;
 import com.example.model.Book;
-import com.example.model.InventoryReport;
-import com.example.model.ReservationReport;
-import com.example.model.SalesReport;
+import com.example.model.reports.InventoryReport;
+import com.example.model.reports.ReservationReport;
+import com.example.model.reports.SalesReport;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -58,7 +58,7 @@ public class ReportPanel extends JPanel {
             Vector<Object> row = new Vector<>();
             row.add(report.getBook().getId().toString());
             row.add(report.getBook().getTitle());
-            row.add(report.getCustomer().getFirstName() + " " + report.getCustomer().getLastName());
+            row.add(report.getCustomer().getFullName());
             row.add(report.getReservationDate().toString());
             row.add(report.getQuantityReserved());
             data.add(row);
