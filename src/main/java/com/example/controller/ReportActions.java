@@ -3,8 +3,10 @@ package com.example.controller;
 import com.example.model.Book;
 import com.example.model.Bookstore;
 import com.example.model.InventoryReport;
+import com.example.model.ReservationReport;
 
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,13 @@ public class ReportActions {
             reports.add(reportItem);
         }
         return reports;
+    }
+
+    public List<ReservationReport> generateReservationReport(LocalDate startDate, LocalDate endDate) {
+        return bookstore.getReservations().values().stream()
+                .filter(reservation -> !reservation.getReservationDate().isBefore(startDate.atStartOfDay()) && !reservation.getReservationDate().isAfter(endDate.atTime(23, 59)))
+                .map(reservation -> new ReservationReport(reservation.getBook(), reservation.getCustomer(), reservation.getReservationDate(), reservation.getQuantity()))
+                .toList();
     }
 
 }
