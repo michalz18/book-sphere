@@ -24,4 +24,8 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

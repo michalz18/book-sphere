@@ -5,7 +5,6 @@ import com.example.model.Bookstore;
 import com.example.model.Customer;
 import com.example.view.components.BookDialog;
 import com.example.utils.OperationResult;
-import com.example.view.components.CustomerDialog;
 import com.example.view.components.CustomerSelectionDialog;
 
 import javax.swing.*;
@@ -55,6 +54,7 @@ public class BookActions {
             JOptionPane.showMessageDialog(frame, result.message());
         }
     }
+
     public void sellBook(UUID bookId) {
         CustomerSelectionDialog customerSelectionDialog = new CustomerSelectionDialog(bookstore);
         Customer selectedCustomer = customerSelectionDialog.selectCustomer(frame);
