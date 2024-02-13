@@ -52,10 +52,12 @@ public class BookActions {
             JOptionPane.showMessageDialog(frame, result.message());
         }
     }
-
     public void sellBook(UUID bookId) {
-        OperationResult result = bookstore.sellBook(bookId);
-        JOptionPane.showMessageDialog(frame, result.message());
-        bookstore.notifyObservers();
+        int response = JOptionPane.showConfirmDialog(frame, "Are you sure you want to sell this book?", "Sell Book", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            OperationResult result = bookstore.sellBook(bookId);
+            JOptionPane.showMessageDialog(frame, result.message());
+            bookstore.notifyObservers();
+        }
     }
 }
