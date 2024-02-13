@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -150,6 +151,25 @@ public class Bookstore implements Subject {
         logger.info("Inventory report generated successfully: {} books reported.", report.size());
         return report;
     }
+
+    public List<ReservationReport> generateReservationReport(LocalDateTime startDate, LocalDateTime endDate) {
+        if (reservations.isEmpty()) {
+            logger.info("Generating reservation report: No reservations found.");
+            return Collections.emptyList();
+        }
+        List<ReservationReport> report = reservations.values().stream()
+                .filter(reservation -> !reservation.getReservationDate().isBefore(startDate) && !reservation.getReservationDate().isAfter(endDate))
+                .map(reservation -> new ReservationReport(reservation.getBook(), reservation.getCustomer(), reservation.getReservationDate(), reservation.getQuantity()))
+                .toList();
+
+        if (report.isEmpty()) {
+            logger.info("No reservations found within the specified date range: {} to {}.", startDate, endDate);
+        } else {
+            logger.info("Reservation report generated successfully: {} reservations reported within the date range {} to {}.", report.size(), startDate, endDate);
+        }
+        return report;
+    }
+
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
