@@ -15,6 +15,8 @@ public class Bookstore implements Subject {
     private final Map<UUID, Book> books = new HashMap<>();
     private final Set<Category> categories = new HashSet<>();
     private final List<Observer> observers = new ArrayList<>();
+    private final Set<Customer> customers = new HashSet<>();
+    private final Map<UUID, Reservation> reservations = new HashMap<>();
 
     @Override
     public void attach(Observer observer) {
@@ -74,6 +76,63 @@ public class Bookstore implements Subject {
         logger.info("Category added: {}", newCategory);
         return operationSuccess("Category successfully added.");
     }
+
+    public OperationResult addCustomer(Customer customer) {
+        if (!customers.add(customer)) {
+            logger.warn("Attempted to add a customer that already exists: {}", customer);
+            return operationFailed("Customer already exists.");
+        }
+        logger.info("Customer added: {}", customer);
+        return operationSuccess("Customer successfully added.");
+    }
+
+    public OperationResult sellBook(UUID bookId, Customer customer, int quantity) {
+        Book book = books.get(bookId);
+        if (book == null) {
+            return operationFailed("Book does not exist.");
+        }
+        if (quantity <= 0 || quantity > (book.getNumberOfCopiesAvailable() - book.getNumberOfReservations())) {
+            return operationFailed("Not enough unreserved copies available for sale.");
+        }
+
+        book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
+
+        if (book.getNumberOfCopiesAvailable() <= 0) {
+            book.setAvailable(false);
+        }
+        logger.info("Book sold: {} to {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
+        notifyObservers();
+        return operationSuccess("Book sold successfully. Quantity: " + quantity);
+    }
+
+    public OperationResult reserveBook(UUID bookId, Customer customer, int quantity) {
+        Book book = books.get(bookId);
+        if (book == null) {
+            return operationFailed("Book does not exist.");
+        }
+        if (quantity <= 0) {
+            return operationFailed("Quantity must be greater than zero.");
+        }
+        int availableForReservation = book.getNumberOfCopiesAvailable() - book.getNumberOfReservations();
+        if (quantity > availableForReservation) {
+            return operationFailed("Invalid quantity for reservation. Only " + availableForReservation + " available.");
+        }
+
+        Reservation reservation = new Reservation(book, customer, quantity);
+        reservations.put(reservation.getId(), reservation);
+
+        book.setNumberOfReservations(book.getNumberOfReservations() + quantity);
+        book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
+        if (book.getNumberOfCopiesAvailable() == 0) {
+            book.setAvailable(false);
+        }
+        logger.info("Book reserved: {} by {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
+        notifyObservers();
+        return operationSuccess("Book reserved successfully. Quantity: " + quantity);
+    }
+
+
+
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
     }

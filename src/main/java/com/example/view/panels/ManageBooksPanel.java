@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class ManageBooksPanel extends JPanel implements Observer {
-    private final Bookstore bookstore; // Dodano pole Bookstore
+    private final Bookstore bookstore;
     private final JTable booksTable;
     private final BookTableModel bookTableModel;
     private final BookActions bookActions;
@@ -35,6 +35,12 @@ public class ManageBooksPanel extends JPanel implements Observer {
 
         booksTable.getColumn("Remove").setCellRenderer(new ButtonRenderer());
         booksTable.getColumn("Remove").setCellEditor(new ButtonEditor(new JCheckBox(), row -> bookActions.removeBook(getBookId(row))));
+
+        booksTable.getColumn("Sell").setCellRenderer(new ButtonRenderer());
+        booksTable.getColumn("Sell").setCellEditor(new ButtonEditor(new JCheckBox(), row -> bookActions.sellBook(getBookId(row))));
+
+        booksTable.getColumn("Reserve").setCellRenderer(new ButtonRenderer());
+        booksTable.getColumn("Reserve").setCellEditor(new ButtonEditor(new JCheckBox(), row -> bookActions.reserveBook(getBookId(row))));
     }
 
     private UUID getBookId(int row) {
