@@ -6,6 +6,7 @@ import com.example.model.Customer;
 import com.example.view.components.BookDialog;
 import com.example.utils.OperationResult;
 import com.example.view.components.CustomerDialog;
+import com.example.view.components.CustomerSelectionDialog;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -55,11 +56,14 @@ public class BookActions {
         }
     }
     public void sellBook(UUID bookId) {
-        int response = JOptionPane.showConfirmDialog(frame, "Are you sure you want to sell this book?", "Sell Book", JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-            OperationResult result = bookstore.sellBook(bookId);
+        CustomerSelectionDialog customerSelectionDialog = new CustomerSelectionDialog(bookstore);
+        Customer selectedCustomer = customerSelectionDialog.selectCustomer(frame);
+        if (selectedCustomer != null) {
+            OperationResult result = bookstore.sellBook(bookId, selectedCustomer);
             JOptionPane.showMessageDialog(frame, result.message());
-            bookstore.notifyObservers();
+        } else {
+            JOptionPane.showMessageDialog(frame, "Sale cancelled, no customer selected.", "Sale Cancelled", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
 }
