@@ -71,6 +71,22 @@ public class BookActions {
         }
     }
 
+    public void reserveBook(UUID bookId) {
+        CustomerSelectionDialog customerSelectionDialog = new CustomerSelectionDialog(bookstore);
+        Customer selectedCustomer = customerSelectionDialog.selectCustomer(frame);
+        if (selectedCustomer != null) {
+            Integer quantity = askForQuantity();
+            if (quantity != null && quantity > 0) {
+                OperationResult result = bookstore.reserveBook(bookId, selectedCustomer, quantity);
+                JOptionPane.showMessageDialog(frame, result.message());
+            } else {
+                JOptionPane.showMessageDialog(frame, "Reservation cancelled, invalid quantity.", "Reservation Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frame, "Reservation cancelled, no customer selected.", "Reservation Cancelled", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     private Integer askForQuantity() {
         String quantityString = JOptionPane.showInputDialog(frame, "Enter quantity:", "Quantity", JOptionPane.PLAIN_MESSAGE);
         try {
