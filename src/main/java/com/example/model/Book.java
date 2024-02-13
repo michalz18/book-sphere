@@ -17,6 +17,7 @@ public class Book {
     private int publicationDate;
     private double price;
     private int numberOfCopiesAvailable;
+    private int numberOfReservations;
     private boolean isAvailable;
     private Category category;
 
@@ -27,8 +28,20 @@ public class Book {
         this.publicationDate = publicationDate;
         this.price = price;
         this.numberOfCopiesAvailable = numberOfCopiesAvailable;
+        this.numberOfReservations = 0;
         this.isAvailable = numberOfCopiesAvailable > 0;
         this.category = category;
     }
+    public boolean reserveCopies(int quantity) {
+        if (quantity <= (numberOfCopiesAvailable - numberOfReservations)) {
+            numberOfReservations += quantity;
+            updateAvailability();
+            return true;
+        }
+        return false;
+    }
 
+    private void updateAvailability() {
+        this.isAvailable = (numberOfCopiesAvailable - numberOfReservations) > 0;
+    }
 }
