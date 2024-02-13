@@ -138,7 +138,18 @@ public class Bookstore implements Subject {
         return operationSuccess("Book reserved successfully. Quantity: " + quantity);
     }
 
-
+    public List<InventoryReport> generateInventoryReport() {
+        if (books.isEmpty()) {
+            logger.info("Generating inventory report: No books found in the inventory.");
+            return Collections.emptyList();
+        }
+        List<InventoryReport> report = new ArrayList<>();
+        for (Book book : books.values()) {
+            report.add(new InventoryReport(book, book.getNumberOfCopiesAvailable()));
+        }
+        logger.info("Inventory report generated successfully: {} books reported.", report.size());
+        return report;
+    }
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
