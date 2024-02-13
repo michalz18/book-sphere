@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class BookTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"ID", "Title", "Author", "Year", "Price", "Copies", "Category", "Edit", "Remove"};
+    private final String[] columnNames = {"ID", "Title", "Author", "Year", "Price", "Copies", "Category", "Edit", "Remove", "Sell"};
     private List<Book> books;
 
     public BookTableModel(List<Book> books) {
@@ -40,6 +40,7 @@ public class BookTableModel extends AbstractTableModel {
             case 6 -> book.getCategory() != null ? book.getCategory().getName() : "N/A";
             case 7 -> "Edit";
             case 8 -> "Remove";
+            case 9 -> "Sell";
             default -> null;
         };
     }
