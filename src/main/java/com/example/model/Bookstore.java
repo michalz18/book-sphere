@@ -15,6 +15,7 @@ public class Bookstore implements Subject {
     private final Map<UUID, Book> books = new HashMap<>();
     private final Set<Category> categories = new HashSet<>();
     private final List<Observer> observers = new ArrayList<>();
+    private final Set<Customer> customers = new HashSet<>();
 
     @Override
     public void attach(Observer observer) {
@@ -73,6 +74,15 @@ public class Bookstore implements Subject {
         notifyObservers();
         logger.info("Category added: {}", newCategory);
         return operationSuccess("Category successfully added.");
+    }
+
+    public OperationResult addCustomer(Customer customer) {
+        if (!customers.add(customer)) {
+            logger.warn("Attempted to add a customer that already exists: {}", customer);
+            return operationFailed("Customer already exists.");
+        }
+        logger.info("Customer added: {}", customer);
+        return operationSuccess("Customer successfully added.");
     }
 
     public OperationResult sellBook(UUID bookId) {
