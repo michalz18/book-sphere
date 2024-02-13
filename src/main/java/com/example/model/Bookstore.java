@@ -16,6 +16,7 @@ public class Bookstore implements Subject {
     private final Set<Category> categories = new HashSet<>();
     private final List<Observer> observers = new ArrayList<>();
     private final Set<Customer> customers = new HashSet<>();
+    private final Map<UUID, Reservation> reservations = new HashMap<>();
 
     @Override
     public void attach(Observer observer) {
@@ -109,13 +110,20 @@ public class Bookstore implements Subject {
         if (book == null) {
             return operationFailed("Book does not exist.");
         }
-        if (quantity <= 0 || quantity > book.getNumberOfCopiesAvailable() - book.getNumberOfReservations()) {
-            return operationFailed("Invalid quantity for reservation.");
+        if (quantity <= 0) {
+            return operationFailed("Quantity must be greater than zero.");
         }
+        int availableForReservation = book.getNumberOfCopiesAvailable() - book.getNumberOfReservations();
+        if (quantity > availableForReservation) {
+            return operationFailed("Invalid quantity for reservation. Only " + availableForReservation + " available.");
+        }
+
+        Reservation reservation = new Reservation(book, customer, quantity);
+        reservations.put(reservation.getId(), reservation);
 
         book.setNumberOfReservations(book.getNumberOfReservations() + quantity);
         book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
-        if (book.getNumberOfCopiesAvailable() <= book.getNumberOfReservations()) {
+        if (book.getNumberOfCopiesAvailable() == 0) {
             book.setAvailable(false);
         }
         logger.info("Book reserved: {} by {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
