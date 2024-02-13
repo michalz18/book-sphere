@@ -87,17 +87,43 @@ public class Bookstore implements Subject {
 
     public OperationResult sellBook(UUID bookId, Customer customer, int quantity) {
         Book book = books.get(bookId);
-        if (book != null && book.getNumberOfCopiesAvailable() >= quantity) {
-            book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
-            if (book.getNumberOfCopiesAvailable() == 0) {
-                book.setAvailable(false);
-            }
-            logger.info("Book sold: {} to {} Quantity: {}", book, customer.getFirstName() + " " + customer.getLastName(), quantity);
-            notifyObservers();
-            return new OperationResult(true, "Book sold successfully. Quantity: " + quantity);
+        if (book == null) {
+            return operationFailed("Book does not exist.");
         }
-        return new OperationResult(false, "Not enough copies available or book does not exist.");
+        if (quantity <= 0 || quantity > (book.getNumberOfCopiesAvailable() - book.getNumberOfReservations())) {
+            return operationFailed("Not enough unreserved copies available for sale.");
+        }
+
+        book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
+
+        if (book.getNumberOfCopiesAvailable() <= 0) {
+            book.setAvailable(false);
+        }
+        logger.info("Book sold: {} to {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
+        notifyObservers();
+        return operationSuccess("Book sold successfully. Quantity: " + quantity);
     }
+
+    public OperationResult reserveBook(UUID bookId, Customer customer, int quantity) {
+        Book book = books.get(bookId);
+        if (book == null) {
+            return operationFailed("Book does not exist.");
+        }
+        if (quantity <= 0 || quantity > book.getNumberOfCopiesAvailable() - book.getNumberOfReservations()) {
+            return operationFailed("Invalid quantity for reservation.");
+        }
+
+        book.setNumberOfReservations(book.getNumberOfReservations() + quantity);
+        book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
+        if (book.getNumberOfCopiesAvailable() <= book.getNumberOfReservations()) {
+            book.setAvailable(false);
+        }
+        logger.info("Book reserved: {} by {} Quantity: {}", book.getTitle(), customer.getFirstName() + " " + customer.getLastName(), quantity);
+        notifyObservers();
+        return operationSuccess("Book reserved successfully. Quantity: " + quantity);
+    }
+
+
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);

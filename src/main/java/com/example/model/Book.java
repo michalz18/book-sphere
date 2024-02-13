@@ -32,6 +32,7 @@ public class Book {
         this.isAvailable = numberOfCopiesAvailable > 0;
         this.category = category;
     }
+
     public boolean reserveCopies(int quantity) {
         if (quantity <= (numberOfCopiesAvailable - numberOfReservations)) {
             numberOfReservations += quantity;

@@ -53,7 +53,7 @@ public class BookDialog {
                 Category selectedCategory = categoryMap.get(selectedCategoryName);
 
                 if (book == null) {
-                    book = new Book(UUID.randomUUID(), title, author, year, price, copies, copies > 0, selectedCategory);
+                    book = new Book(title, author, year, price, copies, selectedCategory);
                 } else {
                     book.setTitle(title);
                     book.setAuthor(author);
