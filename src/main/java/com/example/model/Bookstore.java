@@ -170,6 +170,24 @@ public class Bookstore implements Subject {
         return report;
     }
 
+    public List<SalesReport> generateSalesReport(LocalDateTime startDate, LocalDateTime endDate) {
+        if (sales.isEmpty()) {
+            logger.info("Generating sales report: No sales transactions found.");
+            return Collections.emptyList();
+        }
+        List<SalesReport> report = sales.values().stream()
+                .filter(sale -> !sale.getSaleDate().isBefore(startDate) && !sale.getSaleDate().isAfter(endDate))
+                .map(sale -> new SalesReport(sale.getBook(), sale.getCustomer(), sale.getSaleDate(), sale.getQuantitySold(), sale.getTotalPrice()))
+                .toList();
+
+        if (report.isEmpty()) {
+            logger.info("No sales transactions found within the specified date range: {} to {}.", startDate, endDate);
+        } else {
+            logger.info("Sales report generated successfully: {} sales transactions reported within the date range {} to {}.", report.size(), startDate, endDate);
+        }
+        return report;
+    }
+
 
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
