@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class ManageBooksPanel extends JPanel implements Observer {
-    private final Bookstore bookstore; // Dodano pole Bookstore
+    private final Bookstore bookstore;
     private final JTable booksTable;
     private final BookTableModel bookTableModel;
     private final BookActions bookActions;

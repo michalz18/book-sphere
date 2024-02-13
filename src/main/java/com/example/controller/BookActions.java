@@ -2,8 +2,10 @@ package com.example.controller;
 
 import com.example.model.Book;
 import com.example.model.Bookstore;
+import com.example.model.Customer;
 import com.example.view.components.BookDialog;
 import com.example.utils.OperationResult;
+import com.example.view.components.CustomerDialog;
 
 import javax.swing.*;
 import java.util.ArrayList;
