@@ -5,7 +5,20 @@ import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
 public class BookTableModel extends AbstractTableModel {
-    private final String[] columnNames = {"ID", "Title", "Author", "Year", "Price", "Copies", "Category", "Edit", "Remove", "Sell"};
+    private final String[] columnNames = {
+            "ID",
+            "Title",
+            "Author",
+            "Year",
+            "Price",
+            "Copies",
+            "Reserved Copies",
+            "Category",
+            "Edit",
+            "Remove",
+            "Sell",
+            "Reserve"
+    };
     private List<Book> books;
 
     public BookTableModel(List<Book> books) {
@@ -37,10 +50,12 @@ public class BookTableModel extends AbstractTableModel {
             case 3 -> book.getPublicationDate();
             case 4 -> book.getPrice();
             case 5 -> book.getNumberOfCopiesAvailable();
-            case 6 -> book.getCategory() != null ? book.getCategory().getName() : "N/A";
-            case 7 -> "Edit";
-            case 8 -> "Remove";
-            case 9 -> "Sell";
+            case 6 -> book.getNumberOfReservations();
+            case 7 -> book.getCategory() != null ? book.getCategory().getName() : "N/A";
+            case 8 -> "Edit";
+            case 9 -> "Remove";
+            case 10 -> "Sell";
+            case 11 -> "Reserve";
             default -> null;
         };
     }
@@ -52,6 +67,6 @@ public class BookTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex >= 7;
+        return columnIndex >= 8;
     }
 }

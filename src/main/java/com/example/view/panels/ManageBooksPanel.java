@@ -38,6 +38,9 @@ public class ManageBooksPanel extends JPanel implements Observer {
 
         booksTable.getColumn("Sell").setCellRenderer(new ButtonRenderer());
         booksTable.getColumn("Sell").setCellEditor(new ButtonEditor(new JCheckBox(), row -> bookActions.sellBook(getBookId(row))));
+
+        booksTable.getColumn("Reserve").setCellRenderer(new ButtonRenderer());
+        booksTable.getColumn("Reserve").setCellEditor(new ButtonEditor(new JCheckBox(), row -> bookActions.reserveBook(getBookId(row))));
     }
 
     private UUID getBookId(int row) {
