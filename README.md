@@ -25,7 +25,7 @@ Follow these instructions to get the Bookstore Management System up and running 
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/bookstore-management-system.git
+    git clone https://github.com/michalz18/book-sphere.git
     cd book-sphere
     ```
 
@@ -36,7 +36,7 @@ Follow these instructions to get the Bookstore Management System up and running 
 
 3. **Run the application:**
     ```bash
-    java -jar target/book-sphere-1.0-SNAPSHOT.jar
+    mvn exec:java -Dexec.mainClass="com.example.BookSphereApp"
     ```
 
 ## Features 🌟
