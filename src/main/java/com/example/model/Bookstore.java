@@ -85,19 +85,20 @@ public class Bookstore implements Subject {
         return operationSuccess("Customer successfully added.");
     }
 
-    public OperationResult sellBook(UUID bookId, Customer customer) {
+    public OperationResult sellBook(UUID bookId, Customer customer, int quantity) {
         Book book = books.get(bookId);
-        if (book != null && book.getNumberOfCopiesAvailable() > 0) {
-            book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - 1);
+        if (book != null && book.getNumberOfCopiesAvailable() >= quantity) {
+            book.setNumberOfCopiesAvailable(book.getNumberOfCopiesAvailable() - quantity);
             if (book.getNumberOfCopiesAvailable() == 0) {
                 book.setAvailable(false);
             }
-            logger.info("Book sold: {}", book);
+            logger.info("Book sold: {} to {} Quantity: {}", book, customer.getFirstName() + " " + customer.getLastName(), quantity);
             notifyObservers();
-            return new OperationResult(true, "Book sold successfully to " + customer.getFirstName() + " " + customer.getLastName());
+            return new OperationResult(true, "Book sold successfully. Quantity: " + quantity);
         }
-        return operationFailed("Book cannot be sold (may not exist or no copies available).");
+        return new OperationResult(false, "Not enough copies available or book does not exist.");
     }
+
     private OperationResult operationSuccess(String message) {
         return new OperationResult(true, message);
     }

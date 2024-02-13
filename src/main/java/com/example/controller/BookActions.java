@@ -59,11 +59,25 @@ public class BookActions {
         CustomerSelectionDialog customerSelectionDialog = new CustomerSelectionDialog(bookstore);
         Customer selectedCustomer = customerSelectionDialog.selectCustomer(frame);
         if (selectedCustomer != null) {
-            OperationResult result = bookstore.sellBook(bookId, selectedCustomer);
-            JOptionPane.showMessageDialog(frame, result.message());
+            Integer quantity = askForQuantity();
+            if (quantity != null && quantity > 0) {
+                OperationResult result = bookstore.sellBook(bookId, selectedCustomer, quantity);
+                JOptionPane.showMessageDialog(frame, result.message());
+            } else {
+                JOptionPane.showMessageDialog(frame, "Sale cancelled, invalid quantity.", "Sale Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
             JOptionPane.showMessageDialog(frame, "Sale cancelled, no customer selected.", "Sale Cancelled", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    private Integer askForQuantity() {
+        String quantityString = JOptionPane.showInputDialog(frame, "Enter quantity:", "Quantity", JOptionPane.PLAIN_MESSAGE);
+        try {
+            return Integer.parseInt(quantityString);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Invalid quantity entered.", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
 }
