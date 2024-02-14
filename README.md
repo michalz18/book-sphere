@@ -12,6 +12,21 @@ This project is built with the following technologies:
 ![IntelliJ IDEA](https://img.shields.io/badge/-IntelliJ_IDEA-000000.svg?style=flat-square&logo=intellij-idea&logoColor=white)
 ![JUnit5](https://img.shields.io/badge/-JUnit5-25A162?style=flat-square&logo=junit5&logoColor=white)
 
+## Demo 🎥
+
+https://github.com/michalz18/book-sphere/assets/116461262/fd944f22-ec98-4404-8f74-043de2ca0d75
+
+https://github.com/michalz18/book-sphere/assets/116461262/116da966-d99b-44cd-9384-24816a7f7dc9
+
+https://github.com/michalz18/book-sphere/assets/116461262/4bdd495d-76b2-4d06-94e1-b432dce41b24
+
+## Features 🌟
+
+- **Inventory Management**: Seamlessly manage your book inventory with functionalities to add, edit, and remove listings.
+- **Book Reservation**: Efficiently reserve books for customers, ensuring accurate inventory tracking.
+- **Sales Processing**: Process sales transactions with immediate inventory updates and transaction recording.
+- **Reporting**: Generate detailed reports on inventory levels, sales, and reservations for strategic decision-making.
+
 ## Getting Started 🚀
 
 Follow these instructions to get the Bookstore Management System up and running on your local machine for development and testing purposes.
@@ -38,13 +53,6 @@ Follow these instructions to get the Bookstore Management System up and running 
     ```bash
     mvn exec:java -Dexec.mainClass="com.example.BookSphereApp"
     ```
-
-## Features 🌟
-
-- **Inventory Management**: Seamlessly manage your book inventory with functionalities to add, edit, and remove listings.
-- **Book Reservation**: Efficiently reserve books for customers, ensuring accurate inventory tracking.
-- **Sales Processing**: Process sales transactions with immediate inventory updates and transaction recording.
-- **Reporting**: Generate detailed reports on inventory levels, sales, and reservations for strategic decision-making.
 
 ## Contributing 🤝
 
